@@ -9,18 +9,11 @@ exports.new = (req, res) => {
   res.render("./story/new");
 };
 
-exports.create = (req, res, next) => {
-  //res.send('Created a new story');
-  let story = new model(req.body); //create a new story document
-  story
-    .save() //insert the document to the database
-    .then((story) => {
-      console.log(story);
-      res.redirect("/stories");
-    })
-    .catch((err) => {
-      next(err);
-    });
+exports.create = (req, res)=>{
+    //res.send('Created a new story');
+    let story = req.body;
+    model.save(story);
+    res.redirect('/stories');
 };
 
 exports.show = (req, res, next) => {
