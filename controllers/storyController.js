@@ -9,11 +9,18 @@ exports.new = (req, res) => {
   res.render("./story/new");
 };
 
-exports.create = (req, res)=>{
-    //res.send('Created a new story');
-    let story = req.body;
-    model.save(story);
-    res.redirect('/stories');
+exports.create = (req, res, next) => {
+  //res.send('Created a new story');
+  let story = new model(req.body); //create a new story document
+  story
+    .save() //insert the document into the database
+    .then(story=> res.redirect("/stories")
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        err.status = 400;
+      }
+      next(err);
+    });
 };
 
 exports.show = (req, res, next) => {
